@@ -5,48 +5,75 @@
  */
 
 function pxc_theme_uninstall(req, resp) {
-  const systemKey = req.systemKey;
-  const userToken = req.userToken;
-  const collectionName = "custom_settings"; 
-  const settingsUrl = "https://demo.clearblade.com/api/v/1/collection/" + systemKey + "/" + collectionName;
+  var systemKey = req.systemKey;
+  var userToken = req.userToken;
+  var collectionName = "custom_settings"; 
+  var settingsUrl = "https://demo.clearblade.com/api/v/1/collection/" + systemKey + "/" + collectionName;
 
-  function deleteItemById(itemId) {
-      const query = {
-          "id": itemId 
-      };
-      
-      const deleteOptions = {
-          method: "DELETE",
+  // New default branding configuration
+  var brandingData = {
+      id: "brand",
+      config: JSON.stringify([{
+          title: {
+              titleText: "ClearBlade"
+          },
+          logo: {
+              logoUrl: "https://demo.clearblade.com/ia/pic-theme_7/clearblade_logo_light_green.png",
+              position: "right"
+          }
+      }]),
+      description: "Default Branding Configuration for ClearBlade"
+  };
+
+  // New default theme configuration
+  var themeData = {
+      id: "theme",
+      config: JSON.stringify([{
+          palette: {
+              primary: {
+                  lightMode: "#000000"
+              },
+              banner: {
+                  lightMode: "#242424",
+                  darkMode: "#27EBAF"
+              }
+          }
+      }]),
+      description: "Default Theme Configuration"
+  };
+
+  function updateSettings(data) {
+      var updateOptions = {
+          method: "POST",
           headers: {
               "Content-Type": "application/json",
               "ClearBlade-UserToken": userToken
           },
-          body: JSON.stringify({ query }) 
+          body: JSON.stringify(data)
       };
-      
-      return fetch(settingsUrl, deleteOptions);
+      return fetch(settingsUrl, updateOptions);
   }
 
   Promise.all([
-      deleteItemById("brand"),
-      deleteItemById("theme")
+      updateSettings(brandingData),
+      updateSettings(themeData)
   ])
-  .then(function (responses) {
+  .then(function(responses) {
       for (var i = 0; i < responses.length; i++) {
           if (!responses[i].ok) {
-              throw new Error("Failed to delete an item: " + responses[i].statusText);
+              throw new Error("Failed to update settings: " + responses[i].statusText);
           }
       }
-      return Promise.all(responses.map(function (response) {
+      return Promise.all(responses.map(function(response) {
           return response.json();
       }));
   })
-  .then(function (responseData) {
-      log("PxC Theme Component Uninstalled Successfully: " + JSON.stringify(responseData));
-      resp.success("PxC Theme Component Uninstalled Successfully!");
+  .then(function(responseData) {
+      log("PxC Theme Component Uninstalled by Resetting to Defaults: " + JSON.stringify(responseData));
+      resp.success("PxC Theme Component Uninstalled Successfully - Reset to Defaults!");
   })
-  .catch(function (error) {
-      log("Error in uninstallation: " + JSON.stringify(error));
-      resp.error("Failed to uninstall PxC Theme Component: " + JSON.stringify(error));
+  .catch(function(error) {
+      log("Error in uninstallation: " + error.message);
+      resp.error("Failed to uninstall PxC Theme Component: " + error.message);
   });
 }
