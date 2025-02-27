@@ -4,7 +4,7 @@
  * @param {CbServer.Resp} resp
  */
 
-function pxc_install(req, resp) {
+function pxc_theme_install(req, resp) {
   
   var params = req.params;
   var entity_id = params.entity_id;
