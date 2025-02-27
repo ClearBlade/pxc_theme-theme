@@ -8,7 +8,7 @@ function pxc_theme_uninstall(req, resp) {
   const systemKey = req.systemKey;
   const userToken = req.userToken;
   const collectionName = "custom_settings"; 
-  const settingsUrl = `https://demo.clearblade.com/api/v/1/collection/${systemKey}/${collectionName}`;
+  const settingsUrl = "https://demo.clearblade.com/api/v/1/collection/" + systemKey + "/" + collectionName;
 
   function deleteItemById(itemId) {
       const query = {
@@ -31,19 +31,21 @@ function pxc_theme_uninstall(req, resp) {
       deleteItemById("brand"),
       deleteItemById("theme")
   ])
-  .then(responses => {
-      for (let response of responses) {
-          if (!response.ok) {
-              throw new Error("Failed to delete an item: " + response.statusText);
+  .then(function (responses) {
+      for (var i = 0; i < responses.length; i++) {
+          if (!responses[i].ok) {
+              throw new Error("Failed to delete an item: " + responses[i].statusText);
           }
       }
-      return Promise.all(responses.map(response => response.json()));
+      return Promise.all(responses.map(function (response) {
+          return response.json();
+      }));
   })
-  .then(responseData => {
+  .then(function (responseData) {
       log("PxC Theme Component Uninstalled Successfully: " + JSON.stringify(responseData));
       resp.success("PxC Theme Component Uninstalled Successfully!");
   })
-  .catch(error => {
+  .catch(function (error) {
       log("Error in uninstallation: " + JSON.stringify(error));
       resp.error("Failed to uninstall PxC Theme Component: " + JSON.stringify(error));
   });
