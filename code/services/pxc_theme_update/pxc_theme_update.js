@@ -4,7 +4,7 @@
  * @param {CbServer.Resp} resp
  */
 
-function {{component_prefix}}_update(req, resp) {
+function pxc_theme_update(req, resp) {
   const params = req.params;
   //component update behavior here. Allow the user to update an instance of the component
   resp.success('Success');

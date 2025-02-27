@@ -4,9 +4,8 @@
  * @param {CbServer.Resp} resp
  */
 
-function {{component_prefix}}_install(req, resp) {
+function pxc_theme_setup(req, resp) {
   const params = req.params;
-  const mfe_settings = params.mfe_settings;
-  //component install behavior here. Initialize an instance of the component for use
+  //component setup behavior here initialize any external databases, bucket sets, etc.
   resp.success('Success');
 }

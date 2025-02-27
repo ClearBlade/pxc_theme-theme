@@ -4,8 +4,8 @@
  * @param {CbServer.Resp} resp
  */
 
-function {{component_prefix}}_setup(req, resp) {
+function pxc_theme_teardown(req, resp) {
   const params = req.params;
-  //component setup behavior here initialize any external databases, bucket sets, etc.
+  //component teardown behavior here. Undo any setup done in the setup service
   resp.success('Success');
 }

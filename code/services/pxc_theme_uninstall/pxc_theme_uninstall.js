@@ -4,7 +4,7 @@
  * @param {CbServer.Resp} resp
  */
 
-function {{component_prefix}}_uninstall(req, resp) {
+function pxc_theme_uninstall(req, resp) {
   const params = req.params;
   //component uninstall behavior here, undo any steps done in the install service
   resp.success('Success');
