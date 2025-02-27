@@ -7,17 +7,15 @@
 function pxc_theme_install(req, resp) {
   
   var params = req.params;
-  var entity_id = params.entity_id;
-  var component_id = params.component_id;
-  var mfe_settings = params.mfe_settings;
   var systemKey = req.systemKey; 
   var userToken = req.userToken; 
 
+  // Branding Data
   var brandingData = {
       id: "brand",
       config: JSON.stringify([{
           logo: {
-              logoUrl: "https://symbols-electrical.getvecta.com/stencil_262/69_phoenix-contact-icon.72917d2b46.png"
+              logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Phoenix_Contact_Logo.svg/1200px-Phoenix_Contact_Logo.svg.png"
           },
           title: {
               titleText: "Phoenix Contact"
@@ -26,7 +24,8 @@ function pxc_theme_install(req, resp) {
       description: "Branding Configuration for Phoenix Contact"
   };
 
-  var brandingUrl = "https://demo.clearblade.com/api/v/1/collection/" + systemKey + "/custom_settings";
+  var settingsUrl = "https://demo.clearblade.com/api/v/1/collection/" + systemKey + "/custom_settings";
+  
   var brandingOptions = {
       method: "POST",
       headers: {
@@ -36,7 +35,7 @@ function pxc_theme_install(req, resp) {
       body: JSON.stringify(brandingData)
   };
 
-  fetch(brandingUrl, brandingOptions)
+  fetch(settingsUrl, brandingOptions)
       .then(function (response) {
           if (!response.ok) {
               throw new Error("Failed to create branding data: " + response.statusText);
@@ -45,17 +44,24 @@ function pxc_theme_install(req, resp) {
       })
       .then(function (responseData) {
           log("Branding data created successfully: " + JSON.stringify(responseData));
-          var configData = JSON.parse(brandingData.config);
-          var pxcLogoUrl = configData[0].logo.logoUrl;
 
+          // Theme Data
           var themeData = {
-              entity_id: entity_id,
-              component_id: component_id,
-              settings: JSON.stringify(mfe_settings),
-              logo_url: pxcLogoUrl
+              id: "theme",
+              config: JSON.stringify([{
+                  palette: {
+                      primary: {
+                          lightMode: "#000000"
+                      },
+                      banner: {
+                          lightMode: "#a7cfd2",
+                          darkMode: "#a7cfd2"
+                      }
+                  }
+              }]),
+              description: "Theme Configuration"
           };
 
-          var themeUrl = "https://demo.clearblade.com/api/v/1/collection/" + systemKey + "/custom_settings";
           var themeOptions = {
               method: "POST",
               headers: {
@@ -65,7 +71,7 @@ function pxc_theme_install(req, resp) {
               body: JSON.stringify(themeData)
           };
 
-          return fetch(themeUrl, themeOptions);
+          return fetch(settingsUrl, themeOptions);
       })
       .then(function (response) {
           if (!response.ok) {
@@ -75,10 +81,10 @@ function pxc_theme_install(req, resp) {
       })
       .then(function (responseData) {
           log("Theme data created successfully: " + JSON.stringify(responseData));
-          resp.success("PxC Theme Component Installed Successfully with Logo from custom_settings!");
+          resp.success("PxC Theme Component Installed Successfully with Branding & Theme Config!");
       })
       .catch(function (error) {
           log("Error in installation: " + JSON.stringify(error));
           resp.error("Failed to install PxC Theme Component: " + JSON.stringify(error));
       });
-    }
+}
