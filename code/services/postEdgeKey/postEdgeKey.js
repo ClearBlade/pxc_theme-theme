@@ -43,7 +43,7 @@ function postEdgeKey(req, resp) {
     requestObject.post(requestOptions, function (err, response) {
         if (err) {
             console.error("Error updating Edge public key in IA system:", err);
-            resp.error(`Error updating Edge public key in IA system: ${JSON.stringify(err)}`);
+            resp.error('Error updating Edge public key in IA system');
         } else {
             console.log("Public key successfully stored in IA system:", response);
             resp.success({
