@@ -1,0 +1,13 @@
+{
+    "auto_balance": false,
+    "auto_restart": null,
+    "concurrency": 0,
+    "dependencies": "log,clearblade,clearblade_async,http",
+    "execution_timeout": 60,
+    "logging_enabled": true,
+    "name": "postEdgeKey",
+    "params": [
+        ""
+    ],
+    "run_user": "d2fbfff00cd4a0b196c79f8f963f"
+}
