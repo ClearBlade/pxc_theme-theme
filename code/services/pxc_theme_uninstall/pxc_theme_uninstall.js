@@ -18,7 +18,7 @@ function pxc_theme_uninstall(req, resp) {
               titleText: "ClearBlade"
           },
           logo: {
-              logoUrl: "https://demo.clearblade.com/ia/pic-theme_7/clearblade_logo_light_green.png",
+              logoUrl: "https://i.postimg.cc/YqW2542y/Copy-of-Clear-Blade-Logo-White.png",
               position: "right"
           }
       }]),
